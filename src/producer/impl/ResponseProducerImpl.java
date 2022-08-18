@@ -18,7 +18,7 @@ public class ResponseProducerImpl implements Producer {
         ConnectionFactory factory = Configuration.getConnection();
         try (Connection connection = factory.newConnection();
              Channel channel = connection.createChannel()) {
-            channel.queueDeclare(Constants.OUTPUT_RESPONSE_QUEUE_NAME, false, false, false, null);
+            channel.queueDeclare(Constants.INPUT_REQUEST_QUEUE_NAME, true, false, false, null);
 
             channel.basicPublish("", Constants.INPUT_REQUEST_QUEUE_NAME, null, message);
             System.out.println(" [x] Sent '" + message + "'");

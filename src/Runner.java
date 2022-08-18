@@ -19,9 +19,12 @@ public class Runner {
         Producer requestProducer = new ResponseProducerImpl();
         Producer responseProducer = new ResponseProducerImpl();
 
+        //read request msg
         requestProducer.publishMessage(reqMsg.getBytes(StandardCharsets.UTF_8));
-        responseProducer.publishMessage(reqMsg.getBytes(StandardCharsets.UTF_8));
         requestConsumer.readMessage();
+
+        //read response msg
+        responseProducer.publishMessage(resMsg.getBytes(StandardCharsets.UTF_8));
         responseConsumer.readMessage();
     }
 }

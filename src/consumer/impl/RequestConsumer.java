@@ -18,17 +18,17 @@ public class RequestConsumer implements Consumer {
     public void readMessage() throws IOException, TimeoutException {
         ConnectionFactory factory = Configuration.getConnection();
 
-        try (Connection connection = factory.newConnection()) {
-            Channel channel = connection.createChannel();
-            channel.queueDeclare(Constants.INPUT_REQUEST_QUEUE_NAME, false, false, false, null);
-            System.out.println(" [*] Waiting for messages.");
+        Connection connection = factory.newConnection();
+        Channel channel = connection.createChannel();
+        channel.queueDeclare(Constants.INPUT_REQUEST_QUEUE_NAME, true, false, false, null);
+        System.out.println(" [*] Waiting for messages.");
 
-            DeliverCallback deliverCallback = (consumerTag, delivery) -> {
-                String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
-                System.out.println(" [x] Received '" + message + "'");
-            };
-            channel.basicConsume(Constants.INPUT_REQUEST_QUEUE_NAME, true, deliverCallback, consumerTag -> {
-            });
-        }
+        DeliverCallback deliverCallback = (consumerTag, delivery) -> {
+            String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
+            System.out.println(" [x] Received '" + message + "'");
+        };
+        channel.basicConsume(Constants.INPUT_REQUEST_QUEUE_NAME, true, deliverCallback, consumerTag -> {
+        });
+
     }
 }
